@@ -5,8 +5,8 @@ To run, create a file 'keys.secret' which is one level above the project directo
 
 keys.secret should contain:
 
-<INFURA_API_KEY>,<BASE64 ENCODED INFURA IPFS key:secret>,0
+```<INFURA_API_KEY>,<BASE64 ENCODED INFURA IPFS key:secret>,0```
 
 eg
 
-655a65765ab7656c567e6576d576e65d,MjN324HDFGDFGdfgfdgER234243RTTRsdgg43DFGDFG435435VBXCVBXCVBfdsgsdfERWYEWRY235545,0
+```655a65765ab7656c567e6576d576e65d,MjN324HDFGDFGdfgfdgER234243RTTRsdgg43DFGDFG435435VBXCVBXCVBfdsgsdfERWYEWRY235545,0```
