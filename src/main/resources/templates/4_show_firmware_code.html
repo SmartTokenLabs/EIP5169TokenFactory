@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <title>TokenScript Creator</title>
+    <style>
+        #bodyWrap
+        {
+            margin-left: 3%;
+            margin-bottom: 3%;
+            margin-right: 3%;
+        }
+        h1{
+            text-align: center;
+        }
+        input-block{
+            width:90%;
+        }
+        #script {
+            width:90%;
+            height: 500px;
+        }
+        #contractAddress {
+            width: 50%;
+        }
+        p.ex {
+             color: red;
+        }
+        .b1, .b2 {
+            display:inline-block;
+            position: relative;
+            margin: 5px;
+            float:left;
+            width: calc(50% - 10px);
+            height:400px;
+            background-color: lightgrey;
+        }
+    </style>
+</head>
+<body>
+<script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js" type="application/javascript"></script>
+<div class="jumbotron">
+    <h1>Token Firmware</h1>
+</div>
+<div id="bodyWrap">
+    Copy this code file into your PlatformIO project 'main.cpp' and flash to your firmware to control the IoT from TokenScript
+    Create the project like this: <pre>git clone https://github.com/TokenScript/TokenScriptTestContracts.git</pre>
+    Then open the project in PlatformIO: TokenScriptTestContracts/firmware
+    Then copy this code OVER the default main.cpp
+    <br/>
+    <br/>
+
+    <pre>
+    <p id="show_code" th:text="${code}" />
+    </pre>
+</div>
+<script>
+    function decodeCode()
+    {
+        var encodedCode = document.getElementById("show_code").innerHTML;
+        var encodedCode2 = "${code}";
+        let decodedCode = atob(encodedCode);
+
+        document.getElementById("show_code").innerText = decodedCode;
+    }
+
+    window.onload = decodeCode;
+</script>
+</body>
+</html>
