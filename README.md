@@ -1,7 +1,7 @@
 # EIP5169TokenFactory
 Server Wizard that guides user through creating an EIP5169 powered Token with script and firmware code
 
-To run, create a file 'keys.secret' which is one level above the project directory (ie in the same directory as ```/EIP5169TokenFactory``` 
+To run, create a file 'keys.secret' which is one level above the project directory (ie in the same directory as ```/EIP5169TokenFactory```)
 
 keys.secret should contain:
 
