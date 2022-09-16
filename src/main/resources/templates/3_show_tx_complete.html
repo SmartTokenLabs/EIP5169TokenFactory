@@ -56,14 +56,25 @@
     If you require firmware to control an IoT device continue here
     <h4>Please enter WiFi credentials for the firmware to connect to WiFi</h4>
     Note that this server is open source and we do not store these details, but feel free to add fake details and edit them afterwards.
-    <input style="width: 40%" id="wifi_ssid" class="input-block" value="WiFi SSID" name="wifi-ssid"/>
-    <input style="width: 40%" id="wifi_password" class="input-block" value="WiFi Password" name="wifi-password"/>
-    <h4>Enter the Lock credentials here, use the August Decoder app from the PlayStore here: https://play.google.com/store/apps/details?id=com.stormbird.augustcodereader</h4>
+    <br/>
+    <input style="width: 40%" id="wifi_ssid" class="input-block" placeholder="WiFi SSID" name="wifi-ssid"/>
+    <input style="width: 40%" id="wifi_password" class="input-block" placeholder="WiFi Password" name="wifi-password"/>
+    <br/>
+    <h4>Enter the Lock credentials here, use the August Decoder app from the PlayStore here:</h4>
+    <a href="https://play.google.com/store/apps/details?id=com.stormbird.augustcodereader">
+        August Code Reader on Android Play Store
+    </a>
+    <br/>
     Note you will need a rooted Android phone for it to work. And see the instructions here:
+    <a href="https://github.com/JamesSmartCell/AugustLockCredentials">
+        August Code Reader Repo with Operation Instructions
+    </a>
     <br/>
     <input style="width: 80%" id="lock_credentials" class="input-block" placeholder="AugustLock augustLock('00:00:00:00:00:00', '1234567890ABCDEF1234567890ABCDEF\', 4);" name="credentials"/>
 
-    <h3>Once your firmware is created, you can copy the code over main.cpp in the Web3E August Lock project</h3>
+    <br/>
+    Or just click to create the Firmware and see what the sourcecode will look like - you can fill in the required details later.
+    <br/>
 
     <div><button class="btn-lg btn-primary" th:attr="onclick='createFirmware(' + ${account} + ');'">Create Firmware</button></div>
 
@@ -101,7 +112,7 @@
         var password = document.getElementById("wifi_password").value;
         var smartlock = document.getElementById("lock_credentials").value;
         if (password.length == 0) password = '12345678';
-        if (ssid.length == 0) ssid = 'Your Wifi Name';
+        if (ssid.length == 0) ssid = 'WiFi SSID';
         if (smartlock.length == 0) smartlock = 'AugustLock augustLock(\"00:00:00:00:00:00\", \"1234567890ABCDEF1234567890ABCDEF\", 4);';
 
         ssid = encodeURI(ssid);

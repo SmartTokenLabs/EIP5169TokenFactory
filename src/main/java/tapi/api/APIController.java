@@ -45,7 +45,6 @@ public class APIController
 
     private final String INFURA_KEY;
     private final String INFURA_IPFS_KEY;
-    private final String deploymentAddress;
 
     private final OkHttpClient httpClient;
 
@@ -70,15 +69,6 @@ public class APIController
         String[] sep = keys.split(",");
         INFURA_KEY = sep[0];
         INFURA_IPFS_KEY = sep[1];
-        if (sep.length > 7 && !sep[7].equals("END_DATA"))
-        {
-            deploymentAddress = sep[2];
-        }
-        else
-        {
-            //deploymentAddress = "http://192.168.50.9:8081/";
-            deploymentAddress = "http://192.168.50.9:8081/";
-        }
 
         httpClient = buildClient();
     }
@@ -187,7 +177,7 @@ public class APIController
 
             // create contract
             model.addAttribute("account", "'" + account + "'");
-            model.addAttribute("contract_data", "'0x" + deploymentData + "'");
+            model.addAttribute("contract_data", "0x" + deploymentData);
         }
         catch (Exception e)
         {
@@ -224,8 +214,8 @@ public class APIController
         if (!tokenScript.exists()) return "script_error";
 
         String hash = uploadIPFS(tokenScript, true);
-
-        //TODO: Display the firmware file
+        //now delete the file
+        tokenScript.delete();
 
         model.addAttribute("tx_hash", txHash);
         model.addAttribute("account", "'" + account + "'");
@@ -266,6 +256,9 @@ public class APIController
             code = code.replace("[DEVICE_KEY]", scriptData.privateKey);//scriptData.privateKey);
             code = code.replace("[AUGUST_LOCK_CREDENTIALS]", parse[2]);
 
+            //now remove the map entry
+            pkMap.put(account.toLowerCase(), null);
+
             //now display the code
             //base64 encode the code
             String encoded = new String(java.util.Base64.getEncoder().encode(code.getBytes(UTF_8)), UTF_8);
@@ -273,6 +266,22 @@ public class APIController
             model.addAttribute("code", encoded);
 
             return "4_show_firmware_code";
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "script_error";
+        }
+    }
+
+    @GetMapping(value = "/errorFinal/{message}")
+    String errorFinal(@PathVariable("message") String message,
+                          Model model) {
+
+        try
+        {
+            model.addAttribute("message", message);
+            return "show_error";
         }
         catch (Exception e)
         {
@@ -407,7 +416,7 @@ public class APIController
     {
         String hash = "";
         String command = doUpload ? "" : "?only-hash=true";
-        String APIHeader = "Basic " + INFURA_IPFS_KEY;//"Basic MjN3NHZBd1lmbXU2dzh0M3VHOThER3hWTjVWOjg1MjVjMjMxZThmMGIyZDJmNjY3ZDFjYTExOTNkYWVh";
+        String APIHeader = "Basic " + INFURA_IPFS_KEY;
         try
         {
             RequestBody fileBody = RequestBody.Companion.create(tsFile, MEDIA_TYPE_TOKENSCRIPT);
@@ -420,7 +429,6 @@ public class APIController
             Request request = new Request.Builder().url("https://ipfs.infura.io:5001/api/v0/add" + command)
                     .post(requestBody)
                     .addHeader("Authorization", APIHeader)
-                    //.addHeader("Authorization", "Basic " + INFURA_IPFS_KEY) //Base64 credentials: See Infura documentation; this key is btoa(ipfs_key:ipfs_secret)
                     .build();
 
             okhttp3.Response response = httpClient.newCall(request).execute();
