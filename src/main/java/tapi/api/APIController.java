@@ -257,7 +257,7 @@ public class APIController
             code = code.replace("[AUGUST_LOCK_CREDENTIALS]", parse[2]);
 
             //now remove the map entry
-            pkMap.put(account.toLowerCase(), null);
+            pkMap.remove(account.toLowerCase());
 
             //now display the code
             //base64 encode the code
