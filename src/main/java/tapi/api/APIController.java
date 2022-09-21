@@ -134,8 +134,8 @@ public class APIController
             Web3j web3j = EthereumNode.createWeb3jNode(chainId, INFURA_KEY);
 
             if (web3j == null) {
-                //TODO: show error
-                return "";
+                model.addAttribute("message", "Sorry, chain: " + chainId + " Not supported.");
+                return "show_error";
             }
 
             //2. determine next contract address

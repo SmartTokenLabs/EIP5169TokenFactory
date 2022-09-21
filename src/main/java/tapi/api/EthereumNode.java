@@ -27,6 +27,7 @@ public class EthereumNode
     static final int FANTOM_TEST_ID = 4002;
     static final int AVALANCHE_ID = 43114;
     static final int FUJI_TEST_ID = 43113;
+    static final int SEPOLIA_ID = 11155111;
     static final int POLYGON_ID = 137;
     static final int MUMBAI_TEST_ID = 80001;
     static final int OPTIMISTIC_MAIN_ID = 10;
@@ -34,8 +35,9 @@ public class EthereumNode
     static final int CRONOS_TEST_ID = 338;
     static final int ARBITRUM_MAIN_ID = 42161;
     static final int ARBITRUM_TEST_ID = 421611;
-    //static final int PALM_ID = 11297108109L;
-    //static final int PALM_TEST_ID = 11297108099L;
+
+    static final long PALM_ID = 11297108109L;
+    static final long PALM_TEST_ID = 11297108099L;
     static final int KLAYTN_ID = 8217;
     static final int KLAYTN_BOABAB_ID = 1001;
     static final int IOTEX_MAINNET_ID = 4689;
@@ -48,6 +50,7 @@ public class EthereumNode
     static String MAINNET_RPC_URL = "https://mainnet.infura.io/v3/";
     static String RINKEBY_RPC_URL = "https://rinkeby.infura.io/v3/";
     static String KOVAN_RPC_URL = "https://kovan.infura.io/v3/";
+    static String ROPSTEN_RPC_URL = "https://ropsten.infura.io/v3/";
     static String GOERLI_RPC_URL = "https://goerli.infura.io/v3/";
     static String POLYGON_RPC_URL = "https://polygon-mainnet.infura.io/v3/";
     static String ARBITRUM_RPC_URL = "https://arbitrum-mainnet.infura.io/v3/";
@@ -77,6 +80,7 @@ public class EthereumNode
     static String MILKOMEDA_C1_TEST_RPC = "https://rpc-devnet-cardano-evm.c1.milkomeda.com";
     static String KLAYTN_RPC = "https://public-node-api.klaytnapi.com/v1/cypress";
     static String KLAYTN_BAOBAB_RPC = "https://api.baobab.klaytn.net:8651";
+    static String SEPOLIA_RPC = "https://rpc.sepolia.org";
 
     private static OkHttpClient buildClient()
     {
@@ -111,6 +115,9 @@ public class EthereumNode
                 break;
             case RINKEBY_ID:
                 node = RINKEBY_RPC_URL;
+                break;
+            case ROPSTEN_ID:
+                node = ROPSTEN_RPC_URL;
                 break;
             case XDAI_ID:
                 node = XDAI_RPC_URL;
@@ -160,9 +167,23 @@ public class EthereumNode
             case ARBITRUM_TEST_ID:
                 node = ARBITRUM_TEST_RPC_URL;
                 break;
+            case SEPOLIA_ID:
+                node = SEPOLIA_RPC;
+                break;
 
+                //handle long
             default:
-                node = "";
+                if (chainId == PALM_ID)
+                {
+                    node = PALM_RPC_URL;
+                }
+                else if (chainId == PALM_TEST_ID)
+                {
+                    node = PALM_TEST_RPC_URL;
+                }
+                else {
+                    node = "";
+                }
                 return null;
         }
 
