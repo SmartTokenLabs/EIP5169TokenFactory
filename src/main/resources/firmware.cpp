@@ -8,6 +8,11 @@
 
 #include "esp_wifi.h"
 
+// If you have an Infura key and are using an Infura supported chain you may get better performance by adding your key here
+// Note: you can get a free account, which will easily be sufficient for this application
+//#define USING_INFURA 1
+//#define INFURA_KEY   00000000000000000000000000000000
+
 #include <Web3.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -24,6 +29,8 @@ const char* password = "[PASSWORD]";
 
 //This device private key is used for comms, doesn't have any value
 #define DEVICE_PRIVATE_KEY "[DEVICE_KEY]"
+
+#define DISCONNECT_TIMEOUT 1000*30 //30 Seconds BlueTooth scan disconnect timeout
 
 enum APIRoutes
 {
@@ -198,7 +205,7 @@ void setup()
   delay(100);
   setupWifi();
   actionHandler = new ActionHandler(6);
-  web3 = new Web3(KLAYTN_ID);
+  web3 = new Web3([CHAIN_ID]);
   keyID = new KeyID(web3, DEVICE_PRIVATE_KEY);
   updateChallenge();
 
@@ -246,6 +253,8 @@ void doLockCommand()
 
   augustLock.connect(&connectCallback, &notifyCB, &secureLockCallback, &disConnectCallback);
   augustLock.lockAction(LOCK);
+
+  actionHandler->AddCallback(DISCONNECT_TIMEOUT, &disConnectCallback);
 }
 
 void doUnlockCommand()
@@ -256,6 +265,8 @@ void doUnlockCommand()
 
   augustLock.connect(&connectCallback, &notifyCB, &secureLockCallback, &disConnectCallback);
   augustLock.lockAction(UNLOCK);
+
+  actionHandler->AddCallback(DISCONNECT_TIMEOUT, &disConnectCallback);
 }
 
 void doToggleCommand()

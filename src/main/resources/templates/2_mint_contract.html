@@ -106,6 +106,8 @@
     {
         var token_contract = [[${contract_data}]];
 
+        var chainId = ethereum.chainId;
+
         params = [
         {
             from: account[0],
@@ -123,7 +125,7 @@
         .then((result) => {
             // The result varies by RPC method.
             // For example, this method will return a transaction hash hexadecimal string on success.
-            window.location.replace('/displaytxhash/' + account + '/' + result);
+            window.location.replace('/displaytxhash/' + account + '/' + result + '/' + chainId);
         })
         .catch((error) => {
             // If the request fails, the Promise will reject with an error.

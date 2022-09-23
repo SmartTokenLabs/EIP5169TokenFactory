@@ -76,7 +76,7 @@
     Or just click to create the Firmware and see what the sourcecode will look like - you can fill in the required details later.
     <br/>
 
-    <div><button class="btn-lg btn-primary" th:attr="onclick='createFirmware(' + ${account} + ');'">Create Firmware</button></div>
+    <div><button class="btn-lg btn-primary" th:attr="onclick='createFirmware(' + ${account} + ',' + ${chainId} + ');'">Create Firmware</button></div>
 
     <br/>
     <h4>Don't have an Ethereum wallet? Use AlphaWallet: </h4>
@@ -105,7 +105,7 @@
          })
     }
 
-    function createFirmware(account)
+    function createFirmware(account, chainId)
     {
         //click to next page to create contract
         var ssid = document.getElementById("wifi_ssid").value;
@@ -121,7 +121,7 @@
 
         var base64Stuff = btoa(ssid + " " + password + " " + smartlock);
 
-        window.location.replace('/createFirmware/' + account + '/' + base64Stuff);
+        window.location.replace('/createFirmware/' + account + '/' + base64Stuff + '/' + chainId);
     }
 </script>
 </body>

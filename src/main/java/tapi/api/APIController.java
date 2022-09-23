@@ -73,17 +73,6 @@ public class APIController
         httpClient = buildClient();
     }
 
-    // 1. Get chain & address from user.
-    // 2. Create private key for firmware to determine device address
-    // 3. Determine next contract address on the chain
-    // 4. Ask user to pick contract name & NFT token image or metadata link (or leave default).
-    // 5. Create TokenScript
-    // 6. upload TS to IPFS (hash 1)
-    // 7. use hash 1 as input for Creating contract, also use token metadata link
-    // 8. mint contract
-    // 9. create firmware file and instruct user to upload firmware (this step is a little harder).
-
-
     /***********************************
      * Get Chain and address
      * Ask user to pick contract name and ( Token image or Metadata URI ) or default
@@ -121,15 +110,7 @@ public class APIController
             tokenName = URLDecoder.decode(tokenName, StandardCharsets.UTF_8.toString());
 
             //1. create web3j for this node
-            long chainId;
-            if (chainIdStr.startsWith("0x"))
-            {
-                chainId = Numeric.toBigInt(chainIdStr).longValue();
-            }
-            else
-            {
-                chainId = Long.parseLong(chainIdStr);
-            }
+            long chainId = parseChainId(chainIdStr);
 
             Web3j web3j = EthereumNode.createWeb3jNode(chainId, INFURA_KEY);
 
@@ -187,6 +168,18 @@ public class APIController
         return "2_mint_contract";
     }
 
+    private long parseChainId(String chainIdStr)
+    {
+        if (chainIdStr.startsWith("0x"))
+        {
+            return Numeric.toBigInt(chainIdStr).longValue();
+        }
+        else
+        {
+            return Long.parseLong(chainIdStr);
+        }
+    }
+
     private String createTokenScriptData(String iotAddr, long chainId, String nextContract)
     {
         String scriptData = loadFile("script_template.xml");
@@ -201,9 +194,10 @@ public class APIController
     }
 
 
-    @GetMapping(value = "/displaytxhash/{account}/{txhash}")
+    @GetMapping(value = "/displaytxhash/{account}/{txhash}/{chainId}")
     String handleTxHash(@PathVariable("account") String account,
                                 @PathVariable("txhash") String txHash,
+                                @PathVariable("chainId") String chainIdStr,
                                 Model model) {
 
         ScriptData scriptData = pkMap.get(account.toLowerCase());
@@ -219,6 +213,7 @@ public class APIController
 
         model.addAttribute("tx_hash", txHash);
         model.addAttribute("account", "'" + account + "'");
+        model.addAttribute("chainId", "'" + chainIdStr + "'");
 
         return "3_show_tx_complete";
     }
@@ -227,15 +222,17 @@ public class APIController
      * Create the firmware using the PK and contract address from last step
      ************************************/
 
-    @GetMapping(value = "/createFirmware/{account}/{data}")
+    @GetMapping(value = "/createFirmware/{account}/{data}/{chainId}")
     String createFirmware(@PathVariable("account") String account,
                         @PathVariable("data") String data,
+                        @PathVariable("chainId") String chainIdStr,
                         Model model) {
 
         try
         {
             String decoded = new String(java.util.Base64.getDecoder().decode(data), UTF_8);
             String[] parse = decoded.split(" ");
+            long chainId = parseChainId(chainIdStr);
 
             for (int i = 0; i < parse.length; i++) {
                 parse[i] = URLDecoder.decode(parse[i], StandardCharsets.UTF_8.toString());
@@ -248,13 +245,14 @@ public class APIController
             String code = loadFile("firmware.cpp");
 
             //replace the following:
-            //[SSID] [PASSWORD] [LOCK_CONTRACT] [DEVICE_KEY] [AUGUST_LOCK_CREDENTIALS]
+            //[SSID] [PASSWORD] [LOCK_CONTRACT] [DEVICE_KEY] [AUGUST_LOCK_CREDENTIALS] [CHAIN_NAME]
 
             code = code.replace("[SSID]", parse[0]);
             code = code.replace("[PASSWORD]", parse[1]);
             code = code.replace("[LOCK_CONTRACT]", scriptData.contractAddress);// scriptData.contractAddress);
             code = code.replace("[DEVICE_KEY]", scriptData.privateKey);//scriptData.privateKey);
             code = code.replace("[AUGUST_LOCK_CREDENTIALS]", parse[2]);
+            code = code.replace("[CHAIN_ID]", String.valueOf(chainId));
 
             //now remove the map entry
             pkMap.remove(account.toLowerCase());
