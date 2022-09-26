@@ -205,7 +205,11 @@ void setup()
   delay(100);
   setupWifi();
   actionHandler = new ActionHandler(6);
+#ifdef USING_INFURA
+  web3 = new Web3([CHAIN_ID], INFURA_KEY);
+#else
   web3 = new Web3([CHAIN_ID]);
+#endif
   keyID = new KeyID(web3, DEVICE_PRIVATE_KEY);
   updateChallenge();
 
