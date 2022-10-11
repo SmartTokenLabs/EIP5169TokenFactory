@@ -111,8 +111,10 @@ public class APIController
         try
         {
             tokenName = URLDecoder.decode(tokenName, StandardCharsets.UTF_8.toString());
-            metadata = URLDecoder.decode(metadata, StandardCharsets.UTF_8.toString());
+            byte[] metadataBytes = Base64.getUrlDecoder().decode(metadata); //URLDecoder.decode(metadata, StandardCharsets.UTF_8.toString());
             tokenSymbol = URLDecoder.decode(tokenSymbol, StandardCharsets.UTF_8.toString());
+
+            metadata = new String(metadataBytes, UTF_8);
 
             //1. create web3j for this node
             long chainId = parseChainId(chainIdStr);
