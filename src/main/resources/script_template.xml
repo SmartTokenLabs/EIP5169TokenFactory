@@ -88,8 +88,7 @@
                         document.getElementById('status').innerHTML = 'Verifying credentials ...'
                         // 3. open door
                         let contractAddress = document.getElementById("contractAddress").textContent;
-                        let unlockTime = document.getElementById("openTime").value; //document.getElementById('msg-txt').value;
-                        fetch(`${serverAddr}:8080/api/${iotAddr}/checkSignature?openTime=${unlockTime}&amp;sig=${value}`)
+                        fetch(`${serverAddr}:8080/api/${iotAddr}/checkSignature?openTime=120&amp;sig=${value}`)
                             .then(function (response) {
                                 if (!response.ok) {
                                     document.getElementById('status').innerHTML = response.statusText;
@@ -184,8 +183,7 @@
                         document.getElementById('status').innerHTML = 'Verifying credentials ...'
                         // 3. open door
                         let contractAddress = document.getElementById("contractAddress").textContent;
-                        let unlockTime = document.getElementById("openTime").value; //document.getElementById('msg-txt').value;
-                        fetch(`${serverAddr}:8080/api/${iotAddr}/checkSignatureLock?openTime=${unlockTime}&amp;sig=${value}`)
+                        fetch(`${serverAddr}:8080/api/${iotAddr}/checkSignatureLock?openTime=120&amp;sig=${value}`)
                             .then(function (response) {
                                 if (!response.ok) {
                                     document.getElementById('status').innerHTML = response.statusText;
