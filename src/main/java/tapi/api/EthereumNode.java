@@ -11,10 +11,7 @@ public class EthereumNode
     static final int MAINNET_ID = 1;
     static final int CLASSIC_ID = 61;
     static final int POA_ID = 99;
-    static final int KOVAN_ID = 42;
-    static final int ROPSTEN_ID = 3;
     static final int SOKOL_ID = 77;
-    static final int RINKEBY_ID = 4;
     static final int XDAI_ID = 100;
     static final int GOERLI_ID = 5;
     static final int ARTIS_SIGMA1_ID = 246529;
@@ -107,17 +104,8 @@ public class EthereumNode
             case POA_ID:
                 node = POA_RPC_URL;
                 break;
-            case KOVAN_ID:
-                node = KOVAN_RPC_URL;
-                break;
             case SOKOL_ID:
                 node = SOKOL_RPC_URL;
-                break;
-            case RINKEBY_ID:
-                node = RINKEBY_RPC_URL;
-                break;
-            case ROPSTEN_ID:
-                node = ROPSTEN_RPC_URL;
                 break;
             case XDAI_ID:
                 node = XDAI_RPC_URL;
@@ -169,6 +157,12 @@ public class EthereumNode
                 break;
             case SEPOLIA_ID:
                 node = SEPOLIA_RPC;
+                break;
+            case HECO_ID:
+                node = "https://http-mainnet.hecochain.com";
+                break;
+            case HECO_TEST_ID:
+                node = "https://http-testnet.hecochain.com";
                 break;
 
                 //handle long

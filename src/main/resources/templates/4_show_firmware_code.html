@@ -26,7 +26,7 @@
             width: 50%;
         }
         p.ex {
-             color: red;
+            color: red;
         }
         .b1, .b2 {
             display:inline-block;
@@ -37,6 +37,25 @@
             height:400px;
             background-color: lightgrey;
         }
+        * {
+            box-sizing: border-box;
+        }
+        .container {
+            border: 3px solid #f1f1f1;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .top {
+            padding: 10px;
+            background: #f1f1f1;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .content {
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
@@ -45,16 +64,54 @@
     <h1>Token Firmware</h1>
 </div>
 <div id="bodyWrap">
-    Copy this code file into your PlatformIO project 'main.cpp' and flash to your firmware to control the IoT from TokenScript
-    Create the project like this: <pre>git clone https://github.com/TokenScript/TokenScriptTestContracts.git</pre>
-    Then open the project in PlatformIO: TokenScriptTestContracts/firmware
-    Then copy this code OVER the default main.cpp
-    <br/>
-    <br/>
+    Create a new PlatformIO project for your ESP32 device. Note that this code requires a dual-core ESP32 -
+    It runs Bluetooth on core 0 and the SmartLayer/Web3 comms and signing on Core 1.
+    Replace the platformio.ini with the following code:
 
-    <pre>
-    <p id="show_code" th:text="${code}" />
-    </pre>
+    <h3>platformio.ini</h3>
+    <div class="container">
+        <div class="content">
+<pre><code>
+; PlatformIO Project Configuration File
+;
+;   Build options: build flags, source filter
+;   Upload options: custom upload port, speed and extra flags
+;   Library options: dependencies, extra library storages
+;   Advanced options: extra scripting
+;
+; Please visit documentation for the other options and examples
+; https://docs.platformio.org/page/projectconf.html
+
+[env:esp32dev]
+platform = espressif32
+board = esp32dev
+framework = arduino
+
+; Serial Monitor options
+monitor_speed = 115200
+board_build.partitions = no_ota.csv
+
+lib_deps =  h2zero/NimBLE-Arduino@^1.3.1
+            AugustESP32
+            Web3E
+            </code></pre>
+        </div>
+    </div>
+
+    Now replace the default main.cpp in your project with the following code:
+
+    <h3>main.cpp</h3>
+    <div class="container">
+        <div class="content">
+<pre><code>
+<p id="show_code" th:text="${code}" />
+</code></pre>
+        </div>
+    </div>
+
+    Ensure that you have replaced the wifi credentials and the August door codes in the firmware if you did not enter those into the wizard.
+    <br/>
+    <br/>
 </div>
 <script>
     function decodeCode()
