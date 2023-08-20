@@ -87,6 +87,18 @@ public class APIController
         return "1_connect_user";
     }
 
+    @GetMapping(value = "/faucet")
+    public String faucet(@RequestHeader("User-Agent") String agent, Model model)
+    {
+        return "faucet";
+    }
+
+    @GetMapping(value = "/faucet2")
+    public String faucet2(@RequestHeader("User-Agent") String agent, Model model)
+    {
+        return "faucet2";
+    }
+
     /***********************************
      * receive chain, address, contract name & token image or metadataURI
      *
